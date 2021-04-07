@@ -21,11 +21,12 @@ const cargarTodo = ()=>{
     }
 }
 
-const create = description =>{
+const create =( description,id) =>{
     cargarTodo()
     let todo = {
         description,
-        completed:false
+        completed:false,
+        id
     }
     todoList.push(todo)
     createTodo()
@@ -36,14 +37,47 @@ const getList = ()=>{
     cargarTodo()
     let list = todoList
     for(let todo of list){
-        console.log(`====Todo-list====`.green.black)
-        console.log(`${todo.description}`.red.black)
-        console.log("======Estate=====".green.black)
-        console.log(`${todo.completed}`.red.black)
+        console.log(`====Todo-list-${todo.id}====`.green.black)
+        console.log(`${todo.description}`.blue.black)
+        todo.completed ? console.log(`State:${todo.completed}`.blue.black) : console.log(`State:${todo.completed}`.red.black) 
+    }
+}
+
+const updating = (id,completed=true)=>{
+    cargarTodo()
+    let  i = id-1
+    if(i>=0){
+        todoList[i].completed=completed
+        createTodo()
+        return console.log('state update')
+    }else{
+        return console.log('no updeting')
+    }
+}
+
+const deleteTo = id =>{
+    cargarTodo()
+    let  p = id-1
+    if(p>=0){
+       let newLit= todoList.filter(todo =>{
+           return todo.id !== id
+       })
+       console.log(newLit)
+       if(newLit.length === todoList.length){
+           return console.log('no delete todo')
+       }else{
+        todoList=newLit
+        createTodo()
+        return console.log('todo delete')
+       }
+    }else{
+        return console.log('no delete todo')
     }
 }
 
 module.exports = {
     create,
-    getList
+    getList,
+    updating,
+    deleteTo
 }
